@@ -16,6 +16,8 @@ for (var i = 0; i < wordCount; i++) {
     paragraph.html(txt + '\n');
 }
 
+clearInput(); // Clears input after refresh
+
 // With every key stroke
 input.keydown(function (event) {
     startTime();
