@@ -18,6 +18,7 @@ function countDown() {
     } else {
         input.attr('disabled', 'disabled');
         clearInterval(setTime);
+        doneAudio.play();
         showResults();
     }
 }

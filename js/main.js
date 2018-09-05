@@ -1,5 +1,5 @@
 // Variables
-var string = "Mom is a great cook. She started cooking when she was three years old! I know that sounds silly, but she would help her mother cook. And, now I'm helping my mom cook. I like to make chicken the best. Baked chicken is my most favorite thing to make. It is also my favorite food to eat. One day, when mom was sick, I tried to make the chicken all by myself. I washed the chicken and put it in a pan in the oven to bake. When the bell rang to tell me the chicken was done, I opened the oven door. Guess what? The chicken was not cooked! I started to laugh. I laughed and laughed and laughed! Did you know what I did? I forgot to turn on the oven! The oven! Did you know what I did next? I called on the telephone for pizza to come to our house. Mom was happy that I 'cooked' by myself. She was happy that we could eat the pizza together. Guess what? We will have chicken some other night.",
+var string = "Mom is a great cook. She started cooking when she was three years old! I know that sounds silly, but she would help her mother cook. And, now I'm helping my mom cook. I like to make chicken the best. Baked chicken is my most favorite thing to make. It is also my favorite food to eat. One day, when mom was sick, I tried to make the chicken all by myself. I washed the chicken and put it in a pan in the oven to bake. When the bell rang to tell me the chicken was done, I opened the oven door. Guess what? The chicken was not cooked! I started to laugh. I laughed and laughed and laughed! Did you know what I did? I forgot to turn on the oven! Did you know what I did next? I called on the telephone for pizza to come to our house. Mom was happy that I 'cooked' by myself. She was happy that we could eat the pizza together. Guess what? We will have chicken some other night.",
     strArray = string.split(' '), // Convert the string into array
     userArray = [], // Push what user types into array
     wordCount = strArray.length, // Number of words in the paragraph
@@ -8,7 +8,9 @@ var string = "Mom is a great cook. She started cooking when she was three years 
     currentPlace = 0, // Current word user types
     txt = '', // Used to type the paragraph in HTML
     input = $('input'), // Input Selector
-    paragraph = $('p'); // Paragraph Selector
+    paragraph = $('p'), // Paragraph Selector
+    errorAudio = document.getElementById('errorAudio'), // Error sound when wrong word is written
+    doneAudio = document.getElementById('doneAudio'); // Done sound when the program is finished
 //-------------------------------------------
 // Write the pragraph with spans in the HTML
 for (var i = 0; i < wordCount; i++) {
@@ -29,6 +31,7 @@ input.keydown(function (event) {
         checker();
     }
 });
+
 
 // Check if user pressed space
 function spacePressed(event) {
@@ -69,10 +72,12 @@ function checker() {
         currentPlace++;
         rightCount++;
         colorify(currentPlace, '#35ff35');
+        
     } else {
         currentPlace++;
         wrongCount++;
         colorify(currentPlace, '#f00');
+        errorAudio.play();
     }
 }
 

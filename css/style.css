@@ -1,6 +1,8 @@
 body {
     padding: 30px 20px;
-    background-color: #333;
+    background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
+    background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
+
     color: #FFF;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
@@ -8,25 +10,27 @@ body {
 
 #header {
     text-align: center;
+    font-family: 'Roboto Slab', serif;
 }
 
 h2 {
     margin-top: 50px;
+    font-family: 'Roboto Slab', serif;
 }
 
 p {
     line-height: 30px;
     font-size: 20px;
+    font-family: 'Archivo', sans-serif;
 }
 
 input {
     width: 30%;
-    height: 50px;
-    font-size: 20px;
-    padding: 5px 10px;
-    border-radius: 15px;
-    outline: 0;
-    font-weight: bold;
+    padding: 12px 20px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size:20px;
 }
 
 #done {
