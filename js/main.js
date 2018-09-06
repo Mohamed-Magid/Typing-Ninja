@@ -52,11 +52,7 @@ function startTime() {
 
 // To color the next word in queue
 function standBy() {
-    //colorify(currentPlace + 2, 'yellow');
-    $('p span:nth-of-type(' + (currentPlace + 2) + ')').css({
-        'color': 'black',
-        'background-color': '#cff500'
-    });
+    colorify('standBy', currentPlace + 2, null);
 }
 
 // To fix the bug of space added to each word typed by the user
@@ -75,23 +71,30 @@ function checker() {
     if (strArray[currentPlace] == userArray[currentPlace]) {
         currentPlace++;
         rightCount++;
-        colorify(currentPlace, '#35ff35');
+        colorify('check', currentPlace, '#35ff35');
 
     } else {
         currentPlace++;
         wrongCount++;
-        colorify(currentPlace, '#f00');
+        colorify('check', currentPlace, '#f00');
         errorAudio.play();
     }
-    $('p span:nth-of-type(' + currentPlace + ')').css('background-color', 'transparent');
+    $('p span:nth-of-type(' + currentPlace + ')').css('background-color', 'transparent'); // Reset background color for stand by
 }
 
-// Colors the specific word sent to it in the parameter
-function colorify(word, color) {
-    $('p span:nth-of-type(' + word + ')').css('color', color);
+// Multi uses coloring function
+function colorify(method, position, color) {
+    //$('p span:nth-of-type(' + word + ')').css('color', color);
+    if (method === 'check')
+        $('p span:nth-of-type(' + position + ')').css('color', color)
+
+    else if (method === 'standBy') {
+        $('p span:nth-of-type(' + position + ')').css({
+            'color': 'black',
+            'background-color': '#cff500'
+        });
+    }
 }
-
-
 
 function showResults() {
     $('#done span:first-of-type').html('Right Words: <span>' + rightCount + '</span> words');
