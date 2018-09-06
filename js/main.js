@@ -12,36 +12,63 @@ var string = "Mom is a great cook. She started cooking when she was three years 
     errorAudio = document.getElementById('errorAudio'), // Error sound when wrong word is written
     doneAudio = document.getElementById('doneAudio'); // Done sound when the program is finished
 //-------------------------------------------
-// Write the pragraph with spans in the HTML
-for (var i = 0; i < wordCount; i++) {
-    txt += '<span>' + strArray[i] + '</span> ';
-}
-paragraph.html(txt);
 
-clearInput(); // Clears input after refresh
-
+var substring;
+clearInput();
+initialize();
 // With every key stroke
-input.keydown(function (event) {
+input.keydown(function (e) {
     startTime();
-    if (spacePressed(event)) {
-        standBy();
+    if (spacePressed(e)) {
         var currentWord = input.val();
-        userArray.push(noSpace(currentWord));
-        clearInput();
+        userArray.push(currentWord);
         checker();
+        clearInput();
     }
 });
 
+// For real time checking
+input.keyup(function () {
+    standBy();
+});
+
+//-------------------------------------------
+
+// Set General Settings
+function initialize() {
+    // Write the pragraph with spans in the HTML
+    for (var i = 0; i < wordCount; i++) {
+        txt += '<span>' + strArray[i] + '</span> ';
+    }
+    paragraph.html(txt);
+
+    clearInput(); // Clears input after refresh
+
+    colorify('standBy', 1, '#000', '#cff500'); // Stand by on first word
+}
+
+//-------------------------------------------
+
+// Disable paste in input field
+input.on('paste', function (e) {
+    e.preventDefault();
+});
+
+//-------------------------------------------
 
 // Check if user pressed space
-function spacePressed(event) {
-    var key = event.keyCode;
-    if (key == 32)
+function spacePressed(e) {
+    var key = e.keyCode;
+    if (key == 32) {
+        e.preventDefault();
         return true;
-    else
+    } else
         return false;
 }
 
+//-------------------------------------------
+
+// Starts time if it's not already started
 function startTime() {
     if (!time.counting) {
         setTime = setInterval(countDown, 1000);
@@ -50,52 +77,62 @@ function startTime() {
         return;
 }
 
+//-------------------------------------------
+
 // To color the next word in queue
-function standBy() {
-    colorify('standBy', currentPlace + 2, null);
+function standBy(value) {
+    substring = new RegExp('^' + input.val(), 'g');
+    console.log(substring);
+    if (substring.test(strArray[currentPlace])) {
+        colorify('standBy', currentPlace + 1, '#000', '#cff500');
+    } else {
+        colorify('standBy', currentPlace + 1, '#fff', '#f00');
+    }
 }
 
-// To fix the bug of space added to each word typed by the user
-function noSpace(word) {
-    word = word.replace(' ', '');
-    return word;
-}
+//-------------------------------------------
 
 // Clears the input field after pressing space
 function clearInput() {
     input.val('');
 }
 
+//-------------------------------------------
+
 // Check if user typed correct word
 function checker() {
     if (strArray[currentPlace] == userArray[currentPlace]) {
         currentPlace++;
         rightCount++;
-        colorify('check', currentPlace, '#35ff35');
+        colorify('check', currentPlace, '#35ff35', null);
 
     } else {
         currentPlace++;
         wrongCount++;
-        colorify('check', currentPlace, '#f00');
+        colorify('check', currentPlace, '#f00', null);
         errorAudio.play();
     }
     $('p span:nth-of-type(' + currentPlace + ')').css('background-color', 'transparent'); // Reset background color for stand by
 }
 
+//-------------------------------------------
+
 // Multi uses coloring function
-function colorify(method, position, color) {
-    //$('p span:nth-of-type(' + word + ')').css('color', color);
+function colorify(method, position, fontColor, bgColor) {
     if (method === 'check')
-        $('p span:nth-of-type(' + position + ')').css('color', color)
+        $('p span:nth-of-type(' + position + ')').css('color', fontColor)
 
     else if (method === 'standBy') {
         $('p span:nth-of-type(' + position + ')').css({
-            'color': 'black',
-            'background-color': '#cff500'
+            'color': fontColor,
+            'background-color': bgColor
         });
     }
 }
 
+//-------------------------------------------
+
+// Display Results
 function showResults() {
     $('#done span:first-of-type').html('Right Words: <span>' + rightCount + '</span> words');
     $('#done span:nth-of-type(2)').html('Wrong Words: <span>' + wrongCount + '</span> words');

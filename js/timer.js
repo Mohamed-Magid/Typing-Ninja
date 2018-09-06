@@ -7,19 +7,22 @@ var time = {
     },
     setTime;
 
+    displayTime();
+
 function countDown() {
     displayTime();
     if (!finished()) {
         if (time.seconds === 0) {
             time.seconds = 59;
             time.minutes--;
-        }
-        time.seconds--;
+        } else
+            time.seconds--;
     } else {
         input.attr('disabled', 'disabled');
         clearInterval(setTime);
         doneAudio.play();
         showResults();
+        return;
     }
 }
 
@@ -47,7 +50,7 @@ function finished() {
     */
     if (time.minutes === 0 && time.seconds === 0)
         return true;
-    else if (currentPlace === wordCount)
+    else if (currentPlace >= wordCount)
         return true;
     else
         return false;
