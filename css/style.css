@@ -2,7 +2,6 @@ body {
     padding: 30px 20px;
     background: -webkit-linear-gradient(to right, #24243e, #302b63, #0f0c29);
     background: linear-gradient(to right, #24243e, #302b63, #0f0c29);
-
     color: #FFF;
     font-family: Arial, Helvetica, sans-serif;
     overflow: hidden;
@@ -22,6 +21,7 @@ p {
     line-height: 30px;
     font-size: 20px;
     font-family: 'Archivo', sans-serif;
+    word-wrap: break-word;
 }
 
 input {
@@ -30,7 +30,8 @@ input {
     margin: 8px 0;
     border: 1px solid #ccc;
     border-radius: 6px;
-    font-size:20px;
+    font-size: 20px;
+    outline: 0;
 }
 
 #done {
