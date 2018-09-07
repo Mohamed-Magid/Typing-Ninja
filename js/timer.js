@@ -10,7 +10,6 @@ var time = {
     displayTime();
 
 function countDown() {
-    displayTime();
     if (!finished()) {
         if (time.seconds === 0) {
             time.seconds = 59;
@@ -24,6 +23,7 @@ function countDown() {
         showResults();
         return;
     }
+    displayTime();
 }
 
 function displayTime() {
