@@ -17,6 +17,7 @@ var results = { // Results object
 initialize();
 // With every key stroke
 input.keydown(function (e) {
+    startTime();
     if (spacePressed(e)) {
         var currentWord = input.val();
         checker(currentWord);
@@ -28,7 +29,7 @@ input.keydown(function (e) {
 
 // For real time checking
 input.keyup(function () {
-    startTime();
+    
     standBy();
 });
 
