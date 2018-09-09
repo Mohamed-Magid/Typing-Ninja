@@ -7,19 +7,20 @@ var time = {
     },
     setTime;
 
-    displayTime();
+var timeBackUp = {
+    minutes: time.minutes,
+    seconds: time.seconds
+};
+displayTime();
 
 function countDown() {
-    if (!finished()) {
+    if (!timeIsUp()) {
         if (time.seconds === 0) {
             time.seconds = 59;
             time.minutes--;
         } else
             time.seconds--;
     } else {
-        input.attr('disabled', 'disabled');
-        clearInterval(setTime);
-        doneAudio.play();
         showResults();
         return;
     }
@@ -42,15 +43,8 @@ function properFormat(check) {
 }
 
 // Check if the program ended or not
-function finished() {
-    /*
-        True if:
-            1- Time's up
-            2- User finished the paragraph
-    */
+function timeIsUp() {
     if (time.minutes === 0 && time.seconds === 0)
-        return true;
-    else if (currentPlace >= wordCount)
         return true;
     else
         return false;

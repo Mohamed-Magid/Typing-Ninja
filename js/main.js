@@ -1,32 +1,34 @@
 // Variables
-var userArray = [], // Push what user types into array
-    wordCount = strArray.length, // Number of words in the paragraph
-    rightCount = 0, // Number of right words typed by the user
-    wrongCount = 0, // Number of wrong words typed by the user
+var results = { // Results object
+        correct: 0,
+        incorrect: 0
+    },
     currentPlace = 0, // Current word user types
-    txt = '', // Used to type the paragraph in HTML
     input = $('input'), // Input Selector
-    paragraph = $('p'), // Paragraph Selector
-    errorAudio = document.getElementById('errorAudio'), // Error sound when wrong word is written
-    doneAudio = document.getElementById('doneAudio'); // Done sound when the program is finished
+    paragraphHTML = $('p'), // Paragraph Selector
+    audio = { // Audio object
+        error: document.getElementById('errorAudio'),
+        done: document.getElementById('doneAudio')
+    },
+    subRegEx; // Used in real-time checking
 //-------------------------------------------
 
-var substring;
 clearInput();
 initialize();
 // With every key stroke
 input.keydown(function (e) {
-    startTime();
     if (spacePressed(e)) {
         var currentWord = input.val();
-        userArray.push(currentWord);
-        checker();
+        checker(currentWord);
         clearInput();
     }
+    if (finishedTyping())
+        showResults();
 });
 
 // For real time checking
 input.keyup(function () {
+    startTime();
     standBy();
 });
 
@@ -34,11 +36,12 @@ input.keyup(function () {
 
 // Set General Settings
 function initialize() {
+    var textHTML = '';
     // Write the pragraph with spans in the HTML
-    for (var i = 0; i < wordCount; i++) {
-        txt += '<span>' + strArray[i] + '</span> ';
+    for (var i = 0; i < strArray.length; i++) {
+        textHTML += '<span>' + strArray[i] + '</span> ';
     }
-    paragraph.html(txt);
+    paragraphHTML.html(textHTML);
 
     clearInput(); // Clears input after refresh
 
@@ -68,9 +71,10 @@ function spacePressed(e) {
 
 // Starts time if it's not already started
 function startTime() {
-    if (!time.counting) {
+    if (!time.counting && (input.val().length != 0 || results.incorrect != 0)) {
         setTime = setInterval(countDown, 1000);
         time.counting = true;
+
     } else
         return;
 }
@@ -78,9 +82,9 @@ function startTime() {
 //-------------------------------------------
 
 // To color the next word in queue
-function standBy(value) {
-    substring = new RegExp('^' + input.val(), 'g');
-    if (substring.test(strArray[currentPlace])) {
+function standBy() {
+    subRegEx = new RegExp('^' + input.val(), 'g');
+    if (subRegEx.test(strArray[currentPlace])) {
         colorify('standBy', currentPlace + 1, '#000', '#cff500');
     } else {
         colorify('standBy', currentPlace + 1, '#fff', '#f00');
@@ -97,19 +101,17 @@ function clearInput() {
 //-------------------------------------------
 
 // Check if user typed correct word
-function checker() {
-    if (strArray[currentPlace] == userArray[currentPlace]) {
-        currentPlace++;
-        rightCount++;
+function checker(currentWord) {
+    if (currentWord === strArray[currentPlace++]) {
+        results.correct++;
         colorify('check', currentPlace, '#35ff35', null);
 
     } else {
-        currentPlace++;
-        wrongCount++;
+        results.incorrect++;
         colorify('check', currentPlace, '#f00', null);
-        errorAudio.play();
+        audio.error.play();
     }
-    $('p span:nth-of-type(' + currentPlace + ')').css('background-color', 'transparent'); // Reset background color for stand by
+    colorify('standBy', currentPlace, null, 'transparent'); // Remove highlighting
 }
 
 //-------------------------------------------
@@ -128,11 +130,19 @@ function colorify(method, position, fontColor, bgColor) {
 }
 
 //-------------------------------------------
-
+function finishedTyping() {
+    if (currentPlace === strArray.length)
+        return true;
+    else
+        return false;
+}
 // Display Results
 function showResults() {
-    $('#done span:first-of-type').html('Right Words: <span>' + rightCount + '</span> words');
-    $('#done span:nth-of-type(2)').html('Wrong Words: <span>' + wrongCount + '</span> words');
-    $('#done span:nth-of-type(3)').text('Your WPM Rate: ' + rightCount + ' W/M');
+    input.attr('disabled', 'disabled');
+    clearInterval(setTime);
+    audio.done.play();
+    $('#done span:first-of-type').html('Correct Words: <span>' + results.correct + '</span> words');
+    $('#done span:nth-of-type(2)').html('Incorrect Words: <span>' + results.incorrect + '</span> words');
+    $('#done span:nth-of-type(3)').text('Your WPM Rate: ' + Math.floor(results.correct / (timeBackUp.minutes + (timeBackUp.seconds / 60))) + ' W/M');
     $('#done').css('display', 'block');
 }
