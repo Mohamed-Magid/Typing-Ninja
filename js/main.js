@@ -13,7 +13,7 @@ var results = { // Results object
     subRegEx; // Used in real-time checking
 //-------------------------------------------
 
-clearInput();
+
 initialize();
 // With every key stroke
 input.keydown(function (e) {
@@ -36,6 +36,8 @@ input.keyup(function () {
 
 // Set General Settings
 function initialize() {
+    clearInput();
+    randomize(); // Select Random Paragraph
     var textHTML = '';
     // Write the pragraph with spans in the HTML
     for (var i = 0; i < strArray.length; i++) {
@@ -145,4 +147,24 @@ function showResults() {
     $('#done span:nth-of-type(2)').html('Incorrect Words: <span>' + results.incorrect + '</span> words');
     $('#done span:nth-of-type(3)').text('Your WPM Rate: ' + Math.floor(results.correct / (timeBackUp.minutes + (timeBackUp.seconds / 60))) + ' W/M');
     $('#done').css('display', 'block');
+}
+
+function resetter() {
+    // Reset time Rules
+    clearInterval(setTime);
+    time.minutes = timeBackUp.minutes;
+    time.seconds = timeBackUp.seconds;
+    displayTime();
+    time.counting = false;
+    timerHTML.css('color', '#fff');
+    // Reset General Rules
+    currentPlace = 0;
+    results.correct = 0;
+    results.incorrect = 0;
+    // Reset Input
+    input.removeAttr('disabled');
+
+    // Initialize the page
+    initialize();
+    $('#done').css('display', 'none');
 }

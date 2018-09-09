@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Archivo" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link rel="icon" href="media/images/favicon.png">
     <meta charset="UTF-8">
 </head>
@@ -14,6 +15,9 @@
     <h2>Type this paragraph as fast as you can:</h2>
     <p></p>
     <input id="input" type="text">
+    <button onclick="resetter()">
+        <span><i class="fas fa-sync-alt"></i></span> Refresh
+    </button>
     <h3>Time left: <span></span></h3>
     <div id="done">
         <h2>Your're done. Here are your status</h2>
@@ -27,6 +31,7 @@
     <audio id="doneAudio">
         <source src="media/sounds/done.wav" />
     </audio>
+    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script src="js/timer.js"></script>
     <script src="js/paragraphs.js"></script>

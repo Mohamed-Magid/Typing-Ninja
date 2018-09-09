@@ -29,11 +29,27 @@ input {
     padding: 12px 20px;
     margin: 8px 0;
     border: 1px solid #ccc;
-    border-radius: 6px;
+    border-radius: 6px 0 0 6px;
     font-size: 20px;
     outline: 0;
 }
 
+button {
+    border-radius: 0 6px 6px 0;
+    background-color:#c0392b;
+    outline:0;
+    border:0;
+    color:#FFF;
+    padding: 12px 20px;
+    font-size: 20px;
+    border: 1px solid transparent;
+    margin-left:-8px;
+    cursor: pointer;
+    transition: 0.5s all ease-in-out;
+}
+button:hover {
+    background-color:#881004;
+}
 #done {
     display: none;
 }
