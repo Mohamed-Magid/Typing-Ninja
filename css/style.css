@@ -47,8 +47,14 @@ button {
     cursor: pointer;
     transition: 0.5s all ease-in-out;
 }
+button i {
+    transition: 0.5s all ease-in-out;
+}
 button:hover {
     background-color:#881004;
+}
+button:hover i {
+    transform: rotate(360deg);
 }
 #done {
     display: none;
